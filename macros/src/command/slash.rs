@@ -80,7 +80,7 @@ pub fn generate_parameters(inv: &Invocation) -> Result<Vec<proc_macro2::TokenStr
                 if let Some(choices) = &param.args.choices {
                     let choices = &choices.0;
                     quote::quote! { vec![#( ::poise::CommandParameterChoice {
-                        name: ToString::to_string(&#choices),
+                        name: ToString::to_string(&#choices).into(),
                         localizations: Default::default(),
                         __non_exhaustive: (),
                     } ),*] }
