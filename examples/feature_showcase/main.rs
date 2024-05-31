@@ -19,6 +19,9 @@ mod subcommand_required;
 mod subcommands;
 mod track_edits;
 
+#[cfg(feature = "unstable")]
+mod user_apps;
+
 use poise::serenity_prelude as serenity;
 
 type Error = Box<dyn std::error::Error + Send + Sync>;
@@ -39,55 +42,73 @@ async fn register_commands(ctx: Context<'_>) -> Result<(), Error> {
 async fn main() {
     env_logger::init();
 
-    let framework_options = poise::FrameworkOptions {
-        commands: vec![
-            register_commands(),
-            attachment_parameter::file_details(),
-            attachment_parameter::totalsize(),
-            autocomplete::greet(),
-            bool_parameter::oracle(),
-            #[cfg(feature = "cache")]
-            builtins::servers(),
-            builtins::help(),
-            builtins::pretty_help(),
-            checks::shutdown(),
-            checks::modonly(),
-            checks::delete(),
-            checks::ferrisparty(),
-            checks::cooldowns(),
-            checks::minmax(),
-            checks::get_guild_name(),
-            checks::only_in_dms(),
-            checks::lennyface(),
-            checks::permissions_v2(),
-            choice_parameter::choice(),
-            choice_parameter::inline_choice(),
-            choice_parameter::inline_choice_int(),
-            code_block_parameter::code(),
-            collector::boop(),
-            context_menu::user_info(),
-            context_menu::echo(),
-            inherit_checks::parent_checks(),
-            localization::welcome(),
-            modal::modal(),
-            modal::component_modal(),
-            paginate::paginate(),
-            panic_handler::div(),
-            parameter_attributes::addmultiple(),
-            parameter_attributes::voiceinfo(),
-            parameter_attributes::say(),
-            parameter_attributes::punish(),
-            parameter_attributes::stringlen(),
-            raw_identifiers::r#move(),
-            response_with_reply::reply(),
-            subcommands::parent(),
-            subcommand_required::parent_subcommand_required(),
-            track_edits::test_reuse_response(),
-            track_edits::add(),
-        ],
-        prefix_options: poise::PrefixFrameworkOptions {
-            prefix: Some("~".into()),
-            non_command_message: Some(|_, msg| {
+    let framework = poise::Framework::builder()
+        .options(poise::FrameworkOptions {
+            commands: vec![
+                attachment_parameter::file_details(),
+                attachment_parameter::totalsize(),
+                autocomplete::greet(),
+                bool_parameter::oracle(),
+                #[cfg(feature = "cache")]
+                builtins::servers(),
+                builtins::help(),
+                builtins::pretty_help(),
+                checks::shutdown(),
+                checks::modonly(),
+                checks::delete(),
+                checks::ferrisparty(),
+                checks::cooldowns(),
+                checks::minmax(),
+                checks::get_guild_name(),
+                checks::only_in_dms(),
+                checks::lennyface(),
+                checks::permissions_v2(),
+                choice_parameter::choice(),
+                choice_parameter::inline_choice(),
+                choice_parameter::inline_choice_int(),
+                code_block_parameter::code(),
+                collector::boop(),
+                context_menu::user_info(),
+                context_menu::echo(),
+                inherit_checks::parent_checks(),
+                localization::welcome(),
+                modal::modal(),
+                modal::component_modal(),
+                paginate::paginate(),
+                panic_handler::div(),
+                parameter_attributes::addmultiple(),
+                parameter_attributes::voiceinfo(),
+                parameter_attributes::say(),
+                parameter_attributes::punish(),
+                parameter_attributes::stringlen(),
+                raw_identifiers::r#move(),
+                response_with_reply::reply(),
+                subcommands::parent(),
+                subcommand_required::parent_subcommand_required(),
+                track_edits::test_reuse_response(),
+                track_edits::add(),
+                #[cfg(feature = "unstable")]
+                user_apps::everywhere(),
+                #[cfg(feature = "unstable")]
+                user_apps::everywhere_context(),
+                #[cfg(feature = "unstable")]
+                user_apps::user_install(),
+                #[cfg(feature = "unstable")]
+                user_apps::not_in_guilds(),
+                #[cfg(feature = "unstable")]
+                user_apps::user_install_guild(),
+            ],
+            prefix_options: poise::PrefixFrameworkOptions {
+                prefix: Some("~".into()),
+                non_command_message: Some(|_, _, msg| {
+                    Box::pin(async move {
+                        println!("non command message!: {}", msg.content);
+                        Ok(())
+                    })
+                }),
+                ..Default::default()
+            },
+            on_error: |error| {
                 Box::pin(async move {
                     println!("non command message!: {}", msg.content);
                     Ok(())
