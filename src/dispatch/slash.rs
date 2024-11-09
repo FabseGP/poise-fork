@@ -224,13 +224,7 @@ async fn run_autocomplete<U: Send + Sync + 'static, E>(
     };
 
     // Generate an autocomplete response
-    let autocomplete_response = match autocomplete_callback(ctx, partial_input).await {
-        Ok(x) => x,
-        Err(e) => {
-            tracing::warn!("couldn't generate autocomplete response: {e}");
-            return Ok(());
-        }
-    };
+    let autocomplete_response = autocomplete_callback(ctx, partial_input).await;
 
     // Send the generates autocomplete response
     if let Err(e) = ctx
