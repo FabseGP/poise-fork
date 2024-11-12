@@ -15,8 +15,6 @@ async fn user_permissions(
         None => return Some(serenity::Permissions::all()), // no permission checks in DMs
     };
 
-    let guild = guild_id.to_partial_guild(ctx).await.ok()?;
-
     // Use to_channel so that it can fallback on HTTP for threads (which aren't in cache usually)
     let channel = match channel_id.to_channel(ctx, Some(guild_id)).await {
         Ok(serenity::Channel::Guild(channel)) => channel,
@@ -29,8 +27,8 @@ async fn user_permissions(
         Err(_) => return None,
     };
 
-    let member = guild.member(ctx, user_id).await.ok()?;
-
+    let member = guild_id.member(ctx, user_id).await.ok()?;
+    let guild = guild_id.to_partial_guild(ctx).await.ok()?;
     Some(guild.user_permissions_in(&channel, &member))
 }
 
