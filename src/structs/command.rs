@@ -218,17 +218,21 @@ impl<U, E> Command<U, E> {
         }
 
         if self.guild_only {
-            builder = builder.contexts(vec![serenity::InteractionContext::Guild]);
+            builder = builder.contexts(std::borrow::Cow::Borrowed(&[
+                serenity::InteractionContext::Guild,
+            ]));
         } else if self.dm_only {
-            builder = builder.contexts(vec![serenity::InteractionContext::BotDm]);
+            builder = builder.contexts(std::borrow::Cow::Borrowed(&[
+                serenity::InteractionContext::BotDm,
+            ]));
         }
 
         if let Some(install_context) = self.install_context.clone() {
-            builder = builder.integration_types(install_context);
+            builder = builder.integration_types(std::borrow::Cow::Owned(install_context));
         }
 
         if let Some(interaction_context) = self.interaction_context.clone() {
-            builder = builder.contexts(interaction_context);
+            builder = builder.contexts(std::borrow::Cow::Owned(interaction_context));
         }
 
         if self.subcommands.is_empty() {
@@ -268,17 +272,21 @@ impl<U, E> Command<U, E> {
         }
 
         if self.guild_only {
-            builder = builder.contexts(vec![serenity::InteractionContext::Guild]);
+            builder = builder.contexts(std::borrow::Cow::Borrowed(&[
+                serenity::InteractionContext::Guild,
+            ]));
         } else if self.dm_only {
-            builder = builder.contexts(vec![serenity::InteractionContext::BotDm]);
+            builder = builder.contexts(std::borrow::Cow::Borrowed(&[
+                serenity::InteractionContext::BotDm,
+            ]));
         }
 
         if let Some(install_context) = self.install_context.clone() {
-            builder = builder.integration_types(install_context);
+            builder = builder.integration_types(std::borrow::Cow::Owned(install_context));
         }
 
         if let Some(interaction_context) = self.interaction_context.clone() {
-            builder = builder.contexts(interaction_context);
+            builder = builder.contexts(std::borrow::Cow::Owned(interaction_context));
         }
 
         Some(builder)
