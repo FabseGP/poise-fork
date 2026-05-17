@@ -1,6 +1,6 @@
 [package]
 authors = ["kangalio <jannik.a.schaper@web.de>"]
-edition = "2021"
+edition = "2024"
 name = "poise"
 version = "0.6.1"
 rust-version = "1.88.0"
@@ -31,10 +31,10 @@ branch = "next"
 tokio = { version = "1.25.1", features = ["rt-multi-thread"] }
 futures = { version = "0.3.13", default-features = false }
 tracing-subscriber = "0.3.18"
-fluent = "0.16.0"
+fluent = "0.17.0"
 intl-memoizer = "0.5.1"
-fluent-syntax = "0.11"
-rand = "0.8.5"
+fluent-syntax = "0.12"
+rand = "0.10.1"
 
 [features]
 default = ["serenity/rustls_backend", "cache", "chrono", "handle_panics"]

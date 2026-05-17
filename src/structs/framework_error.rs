@@ -272,7 +272,7 @@ impl<'a, U, E> FrameworkError<'a, U, E> {
 
 /// Simple macro to deduplicate code. Can't be a function due to lifetime issues with `format_args`
 macro_rules! full_command_name {
-    ($ctx:expr) => {
+    ($ctx:expr_2021) => {
         format_args!("{}{}", $ctx.prefix(), $ctx.command().qualified_name)
     };
 }

@@ -115,14 +115,13 @@ pub async fn dispatch_event<U: Send + Sync + 'static, E>(
                     .write()
                     .unwrap()
                     .process_message_delete(*deleted_message_id);
-                if let Some(bot_response) = bot_response {
-                    if let Err(e) = bot_response
+                if let Some(bot_response) = bot_response
+                    && let Err(e) = bot_response
                         .delete(&framework.serenity_context.http, None)
                         .await
                     {
                         tracing::warn!("failed to delete bot response: {}", e);
                     }
-                }
             }
         }
         serenity::FullEvent::InteractionCreate {

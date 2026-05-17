@@ -127,7 +127,7 @@ impl_for_integer!(i8 i16 i32 i64 isize u8 u16 u32 u64 usize);
 
 /// Versatile macro to implement `SlashArgument` for simple types
 macro_rules! impl_slash_argument {
-    ($type:ty, |$ctx:pat, $interaction:pat, $slash_param_type:ident ( $($arg:pat),* )| $extractor:expr) => {
+    ($type:ty, |$ctx:pat, $interaction:pat, $slash_param_type:ident ( $($arg:pat),* )| $extractor:expr_2021) => {
         #[async_trait::async_trait]
         impl SlashArgument for $type {
             async fn extract(

@@ -74,14 +74,14 @@ async fn lookup_channel_global(
         .get_channels(guild_id)
         .await
         .map_err(ChannelParseError::Http)?;
-    if let Some(channel) = channels
+    match channels
         .into_iter()
         .find(|c| c.base.name.eq_ignore_ascii_case(s))
-    {
+    { Some(channel) => {
         Ok(serenity::Channel::Guild(channel))
-    } else {
+    } _ => {
         Err(ChannelParseError::NotFoundOrMalformed)
-    }
+    }}
 }
 
 /// Look up a Channel by a string case-insensitively.
@@ -107,11 +107,10 @@ impl ArgumentConvert for serenity::Channel {
         let channel = lookup_channel_global(&ctx, guild_id, s).await?;
 
         // Don't yield for other guilds' channels
-        if let Some(guild_id) = guild_id {
-            if channel.guild_id().is_none_or(|id| id != guild_id) {
+        if let Some(guild_id) = guild_id
+            && channel.guild_id().is_none_or(|id| id != guild_id) {
                 return Err(ChannelParseError::NotFoundOrMalformed);
             }
-        }
 
         Ok(channel)
     }

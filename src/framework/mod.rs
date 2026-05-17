@@ -81,8 +81,8 @@ impl<U: Send + Sync + 'static, E: Send + Sync> serenity::Framework for Framework
             client.shard_manager.intents(),
         );
 
-        if self.options.initialize_owners {
-            if let Err(e) = insert_owners_from_http(
+        if self.options.initialize_owners
+            && let Err(e) = insert_owners_from_http(
                 &client.http,
                 &mut self.options.owners,
                 &self.options.initialized_team_roles,
@@ -91,7 +91,6 @@ impl<U: Send + Sync + 'static, E: Send + Sync> serenity::Framework for Framework
             {
                 tracing::warn!("Failed to insert owners from HTTP: {e}");
             }
-        }
 
         if let Some(edit_tracker) = &self.options.prefix_options.edit_tracker {
             self.edit_tracker_purge_task =

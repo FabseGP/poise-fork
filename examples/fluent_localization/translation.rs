@@ -20,7 +20,7 @@ pub struct Translations {
 ///
 /// Doesn't support retrieving message attributes
 macro_rules! tr {
-    ( $ctx:ident, $id:expr $(, $argname:ident: $argvalue:expr )* $(,)? ) => {{
+    ( $ctx:ident, $id:expr_2021 $(, $argname:ident: $argvalue:expr_2021 )* $(,)? ) => {{
         #[allow(unused_mut)]
         let mut args = fluent::FluentArgs::new();
         $( args.set(stringify!($argname), $argvalue); )*
